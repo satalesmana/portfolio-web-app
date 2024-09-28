@@ -16,15 +16,12 @@ export default function RootLayout({ children }) {
             <div className="max-w-5xl mx-auto px-6 md:px-12 xl:px-6">
               <div className="flex flex-wrap items-center justify-between">
                 <div>
-                  <a href="/">LOGO</a>
+                  <a href="/admin">Admin Panel</a>
                 </div>
                 <div>
                   <ul className="flex flex-row gap-6">
                     <li>
-                      <a href="/about">asdfasdf</a>
-                    </li>
-                    <li>
-                      <a href="/work">Work</a>
+                      <a href="/admin/work">Work</a>
                     </li>
                   </ul>
                 </div>
