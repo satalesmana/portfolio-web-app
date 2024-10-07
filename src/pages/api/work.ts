@@ -8,11 +8,15 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
   switch (req.method) {
     case "POST":
         try{
-            if(typeof req.body !== "object"){
+            const body = JSON.parse(req.body)
+            if(typeof body !== "object"){
                 throw new Error('invalid request')
             }
-
-            let myWork = await db.collection("work").insertOne(req.body);
+            
+            if( body.title == ""){
+              throw new Error('title is required')
+          }
+            let myWork = await db.collection("work").insertOne(body);
             res.json({ data: myWork });
         }catch(err){
             res.status(422).json({ message: err.message});
