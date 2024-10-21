@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import clientPromise from "../../lib/mongodb";
+import { ObjectId } from 'mongodb';
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
   const client = await clientPromise;
@@ -26,6 +27,15 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     case "GET":
       const allPosts = await db.collection("work").find({}).toArray();
       res.json({ data: allPosts });
+      break;
+    case "DELETE":
+      const body = JSON.parse(req.body)
+
+      const resDelete = await db.collection("work").deleteOne({
+        _id: new  ObjectId(body.deleted_id)
+      })
+
+      res.json({ data: [resDelete], message:"data berhasil dihapus" });
       break;
     default:
         res.status(404).json({message: "page not found"});

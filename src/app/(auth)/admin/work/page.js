@@ -1,6 +1,7 @@
 "use client"
 import { useState } from 'react';
 import Card from '../../../../components/card';
+import WorkList from './component/work-list'
 
 export default function AdminWork() {
   const [data, setData] = useState({
@@ -123,7 +124,7 @@ export default function AdminWork() {
       </Card>
       
       <Card title="List of Work" style="mt-5">
-        asdf
+        <WorkList/>
       </Card>
     </>
   );
