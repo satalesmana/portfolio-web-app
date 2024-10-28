@@ -5,6 +5,12 @@ import ConfigDialog from '../../../../../components/ConfirmDialog'
 export default function WorkList(){
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState([])
+    const [deletdId, setDeletdId]= useState(null)
+    const [modal, setModal] = useState(false)
+    const [modalTitle, setModalTitle] = useState("")
+    const [modalMessage, setModalMessage] = useState("")
+    const [modalBtnOk, setModalBtnOk] = useState("")
+    const [isOkOnly, setIsOkOnly]= useState(false)
 
     async function onLoadData() {
         setLoading(true)
@@ -15,16 +21,38 @@ export default function WorkList(){
     }
 
     const onDeleteItem = async (id)=>{
+        setIsOkOnly(false)
+        setModal(true);
+        setModalBtnOk("Delete");
+        setModalMessage(`Do you want to delete thes item ${id}`);
+        setModalTitle("Confirm Delete?")
+        setDeletdId(id);
+    }
+
+    const onCancel=()=>{
+        setModal(false);
+        setDeletdId(null);
+    }
+
+    const onSubmitDelete=async ()=>{
+        setModal(false);
+
         const request = {
-            deleted_id:id
+            deleted_id:deletdId
         }
         
         let res = await fetch(`/api/work`,{
             method:'DELETE',
             body: JSON.stringify(request),
-        } )
+        })
 
+        setModal(true);
+        setModalMessage(`Data Berhasil Dihapus`);
+        setModalTitle("Info")
+        setIsOkOnly(true)
+        
         onLoadData()
+
     }
 
     useEffect(() => {
@@ -33,7 +61,16 @@ export default function WorkList(){
 
     return (
         <>
-            <ConfigDialog />
+            <ConfigDialog  
+                onCancel={()=>onCancel()} 
+                onOk={()=>onSubmitDelete()} 
+                onOkOny={()=>onCancel()} 
+                showDialog={modal}
+                title={modalTitle}
+                message={modalMessage}
+                okBtnMessage={modalBtnOk}
+                isOkOnly={isOkOnly} />
+
             <table className="table-auto">
                 <thead>
                     <tr>
