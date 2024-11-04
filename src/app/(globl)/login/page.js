@@ -1,11 +1,23 @@
 "use client"
 import { useRouter } from 'next/navigation'
 
+
 export default function Login(){
     const router = useRouter();
 
-    const onSubmitLogin=()=>{
-        router.push('/admin')
+
+    const onSubmitLogin= async ()=>{
+
+       const res =  await fetch(`/api/auth/login`,{
+            method:'POST',
+            body: JSON.stringify({username:''}),
+        })
+        let data = await res.json()
+
+        if(data){
+            router.push('/admin')
+        }
+
     }
 
     return (
