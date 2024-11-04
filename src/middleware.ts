@@ -1,10 +1,14 @@
 import type { NextRequest } from 'next/server'
 import {  NextResponse } from 'next/server'
 
-const protectedRoutes = ['/admin']
+const protectedRoutes = [
+    '/admin',
+    "/admin/work",
+    "/admin/message"
+]
 
 export default async function middleware(req: NextRequest) {
-    const cookie = req.cookies.get('auth-session')
+    const cookie = req.cookies.get(`${process.env.AUTH_COOKIE_NAME}`)
     const path = req.nextUrl.pathname
     const isProtectedRoute = protectedRoutes.includes(path)
 

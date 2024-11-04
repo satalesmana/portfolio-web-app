@@ -1,24 +1,30 @@
 "use client"
 import { useRouter } from 'next/navigation'
-
+import { useState } from 'react'
 
 export default function Login(){
     const router = useRouter();
-
+    const [data, setData] = useState({
+        email:'',
+        password:'',
+      });
 
     const onSubmitLogin= async ()=>{
 
-       const res =  await fetch(`/api/auth/login`,{
+        const res =  await fetch(`/api/auth/login`,{
             method:'POST',
-            body: JSON.stringify({username:''}),
+            body: JSON.stringify(data),
         })
-        let data = await res.json()
+        let response = await res.json()
 
-        if(data){
+        if(res.status == 200){
             router.push('/admin')
         }
-
     }
+
+    const inputHandler= (e) =>{
+        setData({...data, [e.target.name]: e.target.value })
+      }
 
     return (
         <>
@@ -46,6 +52,7 @@ export default function Login(){
                         name="email"
                         type="email"
                         required
+                        onChange={inputHandler}
                         autoComplete="email"
                         className="pl-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                     />
@@ -68,6 +75,7 @@ export default function Login(){
                         id="password"
                         name="password"
                         type="password"
+                        onChange={inputHandler}
                         required
                         autoComplete="current-password"
                         className="pl-3 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
