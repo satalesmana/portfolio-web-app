@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import clientPromise from "../../../lib/mongodb";
 import { setCookie  } from 'cookies-next';
+import { comparePassword } from "../../../lib/session"
+
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     const client = await clientPromise;
@@ -19,13 +21,19 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                     throw new Error('password is required')
                 }
 
-                if( body.email == "admin@mail.com" && body.password == "123"){
-                    setCookie(`${process.env.AUTH_COOKIE_NAME}`, 'value', { req, res, maxAge: 60 * 6 * 24 });
+                const users = await db.collection("users")
+                    .find({email: body.email }).toArray(); 
+
+                if( users.length > 0 && await comparePassword(body.password, users[0].password )){
+                    setCookie(`${process.env.AUTH_COOKIE_NAME}`, JSON.stringify({
+                        id:users[0]._id,
+                        email:users[0].email,
+                        name:users[0].name,
+                    }), { req, res, maxAge: 60 * 6 * 24 });
                 }else{
                     throw new Error('invalid username and password')
                 }
-                // const work = await db.collection("work")
-                //     .find({_id: new ObjectId(req.query.id) }).toArray(); 
+                
 
                 res.status(200).json({message: 'login berhasil'});
             }catch(err){

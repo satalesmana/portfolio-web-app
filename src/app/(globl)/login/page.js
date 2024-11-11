@@ -4,21 +4,26 @@ import { useState } from 'react'
 
 export default function Login(){
     const router = useRouter();
+    const [message, setMessage] =useState('')
     const [data, setData] = useState({
         email:'',
         password:'',
       });
 
     const onSubmitLogin= async ()=>{
-
+        setMessage('')
         const res =  await fetch(`/api/auth/login`,{
             method:'POST',
             body: JSON.stringify(data),
         })
-        let response = await res.json()
-
+        
         if(res.status == 200){
             router.push('/admin')
+        }else{
+            let response = await res.json()
+            setMessage(response.message)
+
+            setTimeout(()=>{ setMessage("") },[5000])
         }
     }
 
@@ -94,10 +99,12 @@ export default function Login(){
                 </div>
             </form>
 
+            <p className='mt-10 text-center text-sm text-red-500'>{ message }</p>
+
             <p className="mt-10 text-center text-sm text-gray-500">
                 Not a member?{' '}
-                <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-                Start a 14 day free trial
+                <a href="/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                Register now
                 </a>
             </p>
             </div>
