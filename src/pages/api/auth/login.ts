@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import clientPromise from "../../../lib/mongodb";
 import { setCookie  } from 'cookies-next';
-import { comparePassword } from "../../../lib/session"
+import { comparePassword, encrypt} from "../../../lib/session"
 
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
@@ -25,11 +25,13 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                     .find({email: body.email }).toArray(); 
 
                 if( users.length > 0 && await comparePassword(body.password, users[0].password )){
-                    setCookie(`${process.env.AUTH_COOKIE_NAME}`, JSON.stringify({
+                    const tokenData = {
                         id:users[0]._id,
                         email:users[0].email,
                         name:users[0].name,
-                    }), { req, res, maxAge: 60 * 6 * 24 });
+                    }
+
+                    setCookie(`${process.env.AUTH_COOKIE_NAME}`, await encrypt(tokenData), { req, res, maxAge: 60 * 6 * 24 });
                 }else{
                     throw new Error('invalid username and password')
                 }
