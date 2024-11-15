@@ -6,12 +6,25 @@ import WorkList from './component/work-list'
 export default function AdminWork() {
   const [data, setData] = useState({
     title:'',
+    id:'',
     employeType:'',
     companyName:'',
     location:'',
     startDate:'',
     endDate:'',
   });
+
+const clearForm = ()=>{
+  setData({
+    title:'',
+    id:'',
+    employeType:'',
+    companyName:'',
+    location:'',
+    startDate:'',
+    endDate:'',
+  })
+}
   
   const optEmployeType = [
     {label:'Full Time', value:'full-time'},
@@ -49,13 +62,34 @@ export default function AdminWork() {
   const onEditItem = async (id)=>{
     const response = await fetch(`/api/work/${id}`);
     let resData = await response.json();
-    console.log('resData', resData)
+   console.log(resData)
     setData({
-      ...data,
-      id: resData.data[0].id,
-      title:resData.data[0].title 
-      //lanjutkan
+      id: resData.data[0]._id,
+      title:resData.data[0].title,
+      employeType: resData.data[0].employeType,
+      companyName: resData.data[0].companyName,
+      location: resData.data[0].location,
+      startDate: resData.data[0].startDate,
+      endDate: resData.data[0].endDate,
     })
+  }
+
+  const onUpdateData = async ()=>{
+    try{
+      let res = await fetch(`/api/work/${data.id}`, {
+        method:'PUT',
+        body: JSON.stringify(data),
+      })
+      let resData = await res.json()
+      if(!resData.data){
+        throw Error(resData.message)
+      }
+      alert("Data berhasil disimpan dengan id")
+      clearForm()
+    }catch(err){
+      console.error("ERR", err.message)
+      alert(err.message)
+    }
   }
 
 
@@ -91,6 +125,7 @@ export default function AdminWork() {
             <input 
               name='companyName' 
               type="text" 
+              value={data.companyName}
               onChange={inputHandler}
               className="w-full border my-input-text"/>
         </div>
@@ -114,6 +149,7 @@ export default function AdminWork() {
             <label>Start Date</label>
             <input 
               name='startDate'
+              value={data.startDate}
               onChange={inputHandler}
               type="date" 
               className="w-full border my-input-text"/>
@@ -123,16 +159,32 @@ export default function AdminWork() {
             <label>End Date</label>
             <input 
               name='endDate'
+              value={data.endDate}
               onChange={inputHandler}
               type="date" 
               className="w-full border my-input-text"/>
         </div>
 
-        <button 
-          onClick={onSubmitData}
-          className="mx-1 h-9 items-center justify-center px-4  rounded-md bg-amber-500">
-            <label>Submit Data</label>
-        </button>
+            {
+               data.id.length > 0 ?
+                <button 
+                  onClick={onUpdateData}
+                  className="mx-1 h-9 items-center justify-center px-4  rounded-md bg-amber-500">
+                    <label>Update Data</label>
+                </button> 
+              :
+                <button 
+                  onClick={onSubmitData}
+                  className="mx-1 h-9 items-center justify-center px-4  rounded-md bg-amber-500">
+                    <label>Submit Data</label>
+                </button>
+            }
+
+         <button 
+            onClick={clearForm}
+            className="mx-1 h-9 items-center justify-center px-4  rounded-md bg-amber-500">
+              <label>Cancel</label>
+          </button>
       </Card>
       
       <Card title="List of Work" style="mt-5">

@@ -17,6 +17,29 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                 res.status(422).json({ message: err.message});
             }
             break;
+        case "PUT":
+            try{
+                const filter = {_id: new ObjectId(req.query.id) }
+                const body = JSON.parse(req.body)
+                const updateDoc = {
+                    $set: {
+                        title:body.title,
+                        employeType: body.employeType,
+                        companyName: body.companyName,
+                        location: body.location,
+                        startDate: body.startDate,
+                        endDate: body.endDate,
+                    },
+                  };
+
+                const work = await db.collection("work")
+                        .updateOne(filter, updateDoc, { upsert: true })
+
+                res.status(200).json({message: 'date berhasil di perbaharui'});
+            }catch(err){
+                console.log(err)
+            }
+        break;
         default:
             res.status(404).json({message: "page not found"});
         break;

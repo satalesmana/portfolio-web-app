@@ -88,7 +88,7 @@ export default function Register(){
 
                         <div>
                             <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-                                Password
+                                confirm password
                             </label>
                             <div className="mt-2">
                                 <input
