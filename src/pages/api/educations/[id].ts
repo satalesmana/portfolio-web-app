@@ -5,7 +5,8 @@ import { ObjectId } from 'mongodb';
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     const client = await clientPromise;
     const db = client.db(process.env.MONGODB_NAME);
-    const id = new ObjectId(req.query.id);
+    const idParam:string = req?.query?.id as string || ''
+    const id = new ObjectId(idParam);
 
     switch (req.method) {  
         case "PUT":
