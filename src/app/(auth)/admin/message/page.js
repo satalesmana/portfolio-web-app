@@ -24,11 +24,11 @@ export default function AdminMessage() {
                         <td className='p-2 '>Loremipsum</td>
                         <td className='p-2 '>loremipsum loremipsum loremipsum</td>
                         <td className='p-2 '>
-                            <div class="inline-flex text-[12px]">
-                                <button class=" bg-green-300 hover:bg-green-400 text-gray-800 py-2 px-4 rounded-l">
+                            <div className="inline-flex text-[12px]">
+                                <button className=" bg-green-300 hover:bg-green-400 text-gray-800 py-2 px-4 rounded-l">
                                     Balas
                                 </button>
-                                <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-r">
+                                <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-r">
                                     Arsipkan
                                 </button>
                             </div>
@@ -41,11 +41,11 @@ export default function AdminMessage() {
                         <td className='p-2 '>Loremipsum</td>
                         <td className='p-2 '>loremipsum loremipsum loremipsum</td>
                         <td className='p-2 '>
-                            <div class="inline-flex text-[12px]">
-                                <button class=" bg-green-300 hover:bg-green-400 text-gray-800 py-2 px-4 rounded-l">
+                            <div className="inline-flex text-[12px]">
+                                <button className=" bg-green-300 hover:bg-green-400 text-gray-800 py-2 px-4 rounded-l">
                                     Balas
                                 </button>
-                                <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-r">
+                                <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-r">
                                     Arsipkan
                                 </button>
                             </div>
@@ -58,11 +58,11 @@ export default function AdminMessage() {
                         <td className='p-2 '>Loremipsum</td>
                         <td className='p-2 '>loremipsum loremipsum loremipsum</td>
                         <td className='p-2 '>
-                            <div class="inline-flex text-[12px]">
-                                <button class=" bg-green-300 hover:bg-green-400 text-gray-800 py-2 px-4 rounded-l">
+                            <div className="inline-flex text-[12px]">
+                                <button className=" bg-green-300 hover:bg-green-400 text-gray-800 py-2 px-4 rounded-l">
                                     Balas
                                 </button>
-                                <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-r">
+                                <button className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-r">
                                     Arsipkan
                                 </button>
                             </div>

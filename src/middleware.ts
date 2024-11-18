@@ -14,19 +14,20 @@ export default async function middleware(req: NextRequest) {
         const path = req.nextUrl.pathname
         const isProtectedRoute = protectedRoutes.includes(path)
         let userId:any = ''
-
-        // if(cookie?.value){
-        //     const secretKey = process.env.SESSION_SECRET
-        //     const encodedKey = new TextEncoder().encode(secretKey)
-        //     try{
-        //         const { payload } = await jwtVerify(cookie?.value, encodedKey, {
-        //             algorithms: ['HS256'],
-        //         })
-        //         userId = payload.id || ''
-        //     }catch(er){
-        //         userId = ""
-        //     }
-        // }
+        if(cookie?.value){
+            
+            // const secretKey = process.env.SESSION_SECRET
+            // const encodedKey = new TextEncoder().encode(secretKey)
+            try{
+                // const { payload } = await jwtVerify(cookie?.value, encodedKey, {
+                //     algorithms: ['HS256'],
+                // })
+                // userId = payload.id || ''
+                userId = cookie?.value
+            }catch(er){
+                userId = ""
+            }
+        }
 
         if (isProtectedRoute &&  userId ==='') {
             return NextResponse.redirect(new URL('/login', req.nextUrl))
