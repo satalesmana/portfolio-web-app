@@ -11,6 +11,9 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     switch (req.method) {
         case "POST":
             try{
+                let tokenData={};
+                let token='';
+                
                 const body = JSON.parse(req.body)
 
                 if( body.email == ""){
@@ -25,19 +28,23 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                     .find({email: body.email }).toArray(); 
 
                 if( users.length > 0 && await comparePassword(body.password, users[0].password )){
-                    const tokenData = {
+                     tokenData = {
                         id:users[0]._id,
                         email:users[0].email,
                         name:users[0].name,
                     }
-
-                    setCookie(`${process.env.AUTH_COOKIE_NAME}`, await encrypt(tokenData), { req, res, maxAge: 60 * 6 * 24 });
+                    token =await encrypt(tokenData);
+                    setCookie(`${process.env.AUTH_COOKIE_NAME}`, token, { req, res, maxAge: 60 * 6 * 24 });
                 }else{
                     throw new Error('invalid username and password')
                 }
                 
 
-                res.status(200).json({message: 'login berhasil'});
+                res.status(200).json({
+                    message: 'login berhasil', 
+                    data: tokenData,
+                    token:token
+                });
             }catch(err){
                 res.status(422).json({ message: err.message});
             }
